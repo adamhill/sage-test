@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAGE - Communications</title>
+    <link rel="stylesheet" href="sage-design-system.css">
+    <style>
+        /* Add page-specific styles here */
+        body {
+            padding: 20px;
+            min-height: 100vh;
+            margin: 0;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body class="theme-default">
+    <div class="sage-container">
+        <h1>COMMUNICATIONS CENTER</h1>
+
+        <div class="sage-panel">
+            <div class="sage-panel-header">MESSAGE CONSOLE</div>
+            <div class="sage-terminal">
+                <p class="sage-prompt">> SECURE CHANNEL INITIATED</p>
+                <p>INCOMING TRANSMISSION FROM COMMAND HQ...</p>
+                <p>DECRYPTING MESSAGE...</p>
+                <p>------------------</p>
+                <p>TO: SAGE DEFENSE NETWORK</p>
+                <p>FROM: CENTRAL COMMAND</p>
+                <p>SUBJECT: STATUS REPORT REQUEST</p>
+                <p></p>
+                <p>REQUEST IMMEDIATE STATUS REPORT ON ALL PERIMETER SECTORS.</p>
+                <p>ACKNOWLEDGE RECEIPT OF MESSAGE.</p>
+                <p>------------------</p>
+                <p class="sage-prompt">> AWAITING RESPONSE</p>
+                <span class="sage-cursor"></span>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <button class="sage-button sage-button-secondary">ACKNOWLEDGE</button>
+                <button class="sage-button">SEND REPORT</button>
+            </div>
+        </div>
+
+        <div class="sage-panel">
+            <div class="sage-panel-header">COMMUNICATION CHANNELS</div>
+            <table class="sage-table">
+                <thead>
+                    <tr>
+                        <th>CHANNEL</th>
+                        <th>STATUS</th>
+                        <th>ENCRYPTION</th>
+                        <th>LAST ACTIVITY</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>COMMAND HQ</td>
+                        <td><span class="sage-status sage-status-active"></span> ACTIVE</td>
+                        <td>AES-256</td>
+                        <td>00:05:23</td>
+                    </tr>
+                    <tr>
+                        <td>FIELD UNITS</td>
+                        <td><span class="sage-status sage-status-active"></span> ACTIVE</td>
+                        <td>AES-256</td>
+                        <td>00:12:48</td>
+                    </tr>
+                    <tr>
+                        <td>EMERGENCY</td>
+                        <td><span class="sage-status sage-status-inactive"></span> STANDBY</td>
+                        <td>QUANTUM</td>
+                        <td>03:45:10</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Script to allow parent to control theme -->
+    <script>
+        // Listen for messages from parent window
+        window.addEventListener('message', function (event) {
+            if (event.data && event.data.type === 'theme-update') {
+                // Update theme class
+                document.body.className = event.data.themeClass || '';
+
+                // Update CSS variables
+                if (event.data.cssVars) {
+                    Object.entries(event.data.cssVars).forEach(([key, value]) => {
+                        document.documentElement.style.setProperty(key, value);
+                    });
+                }
+            }
+        });
+
+        // Notify parent that iframe is ready to receive theme updates
+        if (window.parent !== window) {
+            window.parent.postMessage({ type: 'iframe-ready', id: 'communications' }, '*');
+        }
+
+        // Add blinking cursor animation
+        const cursor = document.querySelector('.sage-cursor');
+        if (cursor) {
+            setInterval(() => {
+                cursor.style.opacity = cursor.style.opacity === '0' ? '1' : '0';
+            }, 500);
+        }
+    </script>
+</body>
+
+</html>

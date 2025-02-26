@@ -1,0 +1,1005 @@
+/*
+ * SAGE Design System
+ * Inspired by SAGE (Semi-Automatic Ground Environment) air defense terminal systems
+ * A retro computing interface design system with tintable colors
+ */
+
+:root {
+    /* Primary color palette - all tintable using CSS custom properties */
+    --sage-primary-hue: 120;
+    /* Green by default, can be modified */
+    --sage-secondary-hue: 200;
+    /* Blue by default, can be modified */
+    --sage-alert-hue: 0;
+    /* Red by default, can be modified */
+    --sage-warning-hue: 40;
+    /* Amber by default, can be modified */
+
+    /* Base colors */
+    --sage-black: #000000;
+    --sage-dark: #111111;
+    --sage-background: #001100;
+    --sage-surface: #002200;
+
+    /* Phosphor colors - derived from primary hues */
+    --sage-primary-color: hsl(var(--sage-primary-hue), 80%, 50%);
+    --sage-primary-glow: hsl(var(--sage-primary-hue), 100%, 70%);
+    --sage-primary-dim: hsl(var(--sage-primary-hue), 60%, 25%);
+
+    --sage-secondary-color: hsl(var(--sage-secondary-hue), 80%, 50%);
+    --sage-secondary-glow: hsl(var(--sage-secondary-hue), 100%, 70%);
+    --sage-secondary-dim: hsl(var(--sage-secondary-hue), 60%, 25%);
+
+    --sage-alert-color: hsl(var(--sage-alert-hue), 80%, 50%);
+    --sage-alert-glow: hsl(var(--sage-alert-hue), 100%, 70%);
+    --sage-alert-dim: hsl(var(--sage-alert-hue), 60%, 25%);
+
+    --sage-warning-color: hsl(var(--sage-warning-hue), 80%, 50%);
+    --sage-warning-glow: hsl(var(--sage-warning-hue), 100%, 70%);
+    --sage-warning-dim: hsl(var(--sage-warning-hue), 60%, 25%);
+
+    /* Neutral tones */
+    --sage-text: hsl(var(--sage-primary-hue), 30%, 80%);
+    --sage-text-dim: hsl(var(--sage-primary-hue), 20%, 60%);
+    --sage-border: hsl(var(--sage-primary-hue), 40%, 30%);
+
+    /* Grid settings */
+    --sage-grid-unit: 8px;
+    --sage-border-radius: 2px;
+
+    /* Typography */
+    --sage-font-mono: 'Courier New', monospace;
+    --sage-font-display: 'VT323', 'OCR A Extended', 'Courier New', monospace;
+
+    /* Spacing */
+    --sage-spacing-xs: var(--sage-grid-unit);
+    --sage-spacing-sm: calc(var(--sage-grid-unit) * 2);
+    --sage-spacing-md: calc(var(--sage-grid-unit) * 3);
+    --sage-spacing-lg: calc(var(--sage-grid-unit) * 4);
+    --sage-spacing-xl: calc(var(--sage-grid-unit) * 6);
+
+    /* Effects */
+    --sage-glow-effect: 0 0 6px;
+    --sage-scan-line: rgba(0, 255, 0, 0.05);
+}
+
+/* Base styles */
+body {
+    background-color: var(--sage-background);
+    color: var(--sage-text);
+    font-family: var(--sage-font-mono);
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(transparent 0%,
+            var(--sage-scan-line) 50%,
+            transparent 51%);
+    background-size: 100% 4px;
+    opacity: 0.3;
+    z-index: 100;
+}
+
+/* CRT effect */
+.sage-crt-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: radial-gradient(circle at center,
+            transparent 0%,
+            rgba(0, 0, 0, 0.2) 90%,
+            rgba(0, 0, 0, 0.4) 100%);
+    z-index: 99;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--sage-font-display);
+    color: var(--sage-primary-glow);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: var(--sage-spacing-md);
+    margin-bottom: var(--sage-spacing-sm);
+}
+
+h1 {
+    font-size: 32px;
+    text-shadow: var(--sage-glow-effect) var(--sage-primary-dim);
+    position: relative;
+    display: inline-block;
+}
+
+h1::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: var(--sage-primary-color);
+    box-shadow: var(--sage-glow-effect) var(--sage-primary-glow);
+}
+
+h2 {
+    font-size: 28px;
+}
+
+h3 {
+    font-size: 24px;
+}
+
+h4 {
+    font-size: 20px;
+}
+
+h5 {
+    font-size: 18px;
+}
+
+h6 {
+    font-size: 16px;
+}
+
+p {
+    margin: var(--sage-spacing-sm) 0;
+}
+
+.sage-code {
+    font-family: var(--sage-font-mono);
+    background-color: var(--sage-surface);
+    border: 1px solid var(--sage-border);
+    border-radius: var(--sage-border-radius);
+    padding: var(--sage-spacing-xs) var(--sage-spacing-sm);
+    color: var(--sage-secondary-color);
+}
+
+/* Layout */
+.sage-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--sage-spacing-md);
+    box-sizing: border-box;
+}
+
+.sage-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--sage-spacing-md);
+}
+
+.sage-panel {
+    background-color: var(--sage-surface);
+    border: 1px solid var(--sage-border);
+    border-radius: var(--sage-border-radius);
+    padding: var(--sage-spacing-md);
+    margin-bottom: var(--sage-spacing-md);
+    position: relative;
+}
+
+.sage-panel-header {
+    background-color: var(--sage-primary-dim);
+    color: var(--sage-primary-glow);
+    padding: var(--sage-spacing-xs) var(--sage-spacing-md);
+    margin: calc(-1 * var(--sage-spacing-md));
+    margin-bottom: var(--sage-spacing-md);
+    border-bottom: 1px solid var(--sage-border);
+    font-family: var(--sage-font-display);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-top-left-radius: var(--sage-border-radius);
+    border-top-right-radius: var(--sage-border-radius);
+}
+
+.sage-panel-footer {
+    background-color: var(--sage-surface);
+    padding: var(--sage-spacing-xs) var(--sage-spacing-md);
+    margin: calc(-1 * var(--sage-spacing-md));
+    margin-top: var(--sage-spacing-md);
+    border-top: 1px solid var(--sage-border);
+    text-align: right;
+    font-size: 0.9em;
+    color: var(--sage-text-dim);
+    border-bottom-left-radius: var(--sage-border-radius);
+    border-bottom-right-radius: var(--sage-border-radius);
+}
+
+/* Status indicators */
+.sage-status {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: var(--sage-spacing-xs);
+}
+
+.sage-status-active {
+    background-color: var(--sage-primary-color);
+    box-shadow: 0 0 10px var(--sage-primary-glow);
+    animation: pulse 2s infinite;
+}
+
+.sage-status-warning {
+    background-color: var(--sage-warning-color);
+    box-shadow: 0 0 10px var(--sage-warning-glow);
+    animation: pulse 1s infinite;
+}
+
+.sage-status-alert {
+    background-color: var(--sage-alert-color);
+    box-shadow: 0 0 10px var(--sage-alert-glow);
+    animation: pulse 0.5s infinite;
+}
+
+.sage-status-inactive {
+    background-color: var(--sage-text-dim);
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Buttons */
+.sage-button {
+    background-color: var(--sage-primary-dim);
+    color: var(--sage-text);
+    border: 1px solid var(--sage-primary-color);
+    border-radius: var(--sage-border-radius);
+    font-family: var(--sage-font-display);
+    text-transform: uppercase;
+    padding: var(--sage-spacing-xs) var(--sage-spacing-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.sage-button:hover {
+    background-color: var(--sage-primary-color);
+    color: var(--sage-black);
+    box-shadow: 0 0 8px var(--sage-primary-glow);
+}
+
+.sage-button:active {
+    transform: translateY(1px);
+}
+
+.sage-button::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent);
+    animation: button-shine 2s infinite;
+}
+
+@keyframes button-shine {
+    100% {
+        left: 200%;
+    }
+}
+
+.sage-button-secondary {
+    background-color: var(--sage-secondary-dim);
+    border-color: var(--sage-secondary-color);
+}
+
+.sage-button-secondary:hover {
+    background-color: var(--sage-secondary-color);
+    box-shadow: 0 0 8px var(--sage-secondary-glow);
+}
+
+.sage-button-alert {
+    background-color: var(--sage-alert-dim);
+    border-color: var(--sage-alert-color);
+}
+
+.sage-button-alert:hover {
+    background-color: var(--sage-alert-color);
+    box-shadow: 0 0 8px var(--sage-alert-glow);
+}
+
+.sage-button-warning {
+    background-color: var(--sage-warning-dim);
+    border-color: var(--sage-warning-color);
+}
+
+.sage-button-warning:hover {
+    background-color: var(--sage-warning-color);
+    box-shadow: 0 0 8px var(--sage-warning-glow);
+}
+
+/* Text inputs */
+.sage-input-group {
+    margin-bottom: var(--sage-spacing-md);
+}
+
+.sage-label {
+    display: block;
+    margin-bottom: var(--sage-spacing-xs);
+    color: var(--sage-text);
+    font-weight: bold;
+    font-family: var(--sage-font-display);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+}
+
+.sage-input {
+    background-color: var(--sage-dark);
+    color: var(--sage-primary-color);
+    border: 1px solid var(--sage-border);
+    border-radius: var(--sage-border-radius);
+    padding: var(--sage-spacing-xs) var(--sage-spacing-sm);
+    font-family: var(--sage-font-mono);
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.2s;
+}
+
+.sage-input:focus {
+    outline: none;
+    border-color: var(--sage-primary-color);
+    box-shadow: 0 0 5px var(--sage-primary-glow);
+    color: var(--sage-primary-glow);
+}
+
+.sage-input::placeholder {
+    color: var(--sage-text-dim);
+    opacity: 0.7;
+}
+
+/* Terminal/console window */
+.sage-terminal {
+    background-color: var(--sage-black);
+    color: var(--sage-primary-color);
+    border: 1px solid var(--sage-border);
+    border-radius: var(--sage-border-radius);
+    padding: var(--sage-spacing-md);
+    font-family: var(--sage-font-mono);
+    overflow: auto;
+    height: 300px;
+    position: relative;
+}
+
+.sage-terminal::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(0deg,
+            var(--sage-scan-line),
+            var(--sage-scan-line) 2px,
+            transparent 2px,
+            transparent 4px);
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+.sage-prompt {
+    color: var(--sage-primary-glow);
+}
+
+.sage-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background-color: var(--sage-primary-color);
+    animation: blink 1s infinite;
+    vertical-align: middle;
+}
+
+@keyframes blink {
+
+    0%,
+    49% {
+        opacity: 1;
+    }
+
+    50%,
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Tables */
+.sage-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--sage-spacing-md) 0;
+    font-family: var(--sage-font-mono);
+}
+
+.sage-table th,
+.sage-table td {
+    border: 1px solid var(--sage-border);
+    padding: var(--sage-spacing-xs) var(--sage-spacing-sm);
+    text-align: left;
+}
+
+.sage-table th {
+    background-color: var(--sage-primary-dim);
+    color: var(--sage-text);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+}
+
+.sage-table tr:nth-child(even) {
+    background-color: var(--sage-surface);
+}
+
+.sage-table tr:hover {
+    background-color: var(--sage-primary-dim);
+}
+
+/* Radar/Scope display */
+.sage-radar {
+    width: 300px;
+    height: 300px;
+    background-color: var(--sage-black);
+    border-radius: 50%;
+    border: 2px solid var(--sage-border);
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 20px var(--sage-primary-dim);
+}
+
+.sage-radar-grid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.sage-radar-grid::before,
+.sage-radar-grid::after {
+    content: "";
+    position: absolute;
+    background-color: var(--sage-primary-dim);
+    opacity: 0.4;
+}
+
+.sage-radar-grid::before {
+    width: 1px;
+    height: 100%;
+    left: 50%;
+}
+
+.sage-radar-grid::after {
+    width: 100%;
+    height: 1px;
+    top: 50%;
+}
+
+.sage-radar-sweep {
+    position: absolute;
+    width: 50%;
+    height: 1px;
+    background-color: var(--sage-primary-glow);
+    top: 50%;
+    left: 50%;
+    transform-origin: left center;
+    animation: sweep 4s infinite linear;
+    box-shadow: 0 0 5px var(--sage-primary-glow);
+}
+
+@keyframes sweep {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.sage-target {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: var(--sage-alert-glow);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 5px var(--sage-alert-glow);
+}
+
+/* Progress bars */
+.sage-progress-container {
+    background-color: var(--sage-black);
+    border: 1px solid var(--sage-border);
+    border-radius: var(--sage-border-radius);
+    height: 20px;
+    overflow: hidden;
+    margin: var(--sage-spacing-sm) 0;
+}
+
+.sage-progress {
+    background-color: var(--sage-primary-color);
+    height: 100%;
+    width: 50%;
+    /* Default value */
+    position: relative;
+    box-shadow: 0 0 10px var(--sage-primary-glow);
+}
+
+.sage-progress::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.2) 50%,
+            transparent 100%);
+    animation: progress-shine 2s infinite;
+}
+
+@keyframes progress-shine {
+    from {
+        left: -100%;
+    }
+
+    to {
+        left: 100%;
+    }
+}
+
+/* Dialogs and modals */
+.sage-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.sage-modal {
+    background-color: var(--sage-surface);
+    border: 1px solid var(--sage-primary-color);
+    border-radius: var(--sage-border-radius);
+    box-shadow: 0 0 15px var(--sage-primary-glow);
+    width: 500px;
+    max-width: 90%;
+    max-height: 80%;
+    overflow-y: auto;
+    position: relative;
+}
+
+.sage-modal-header {
+    background-color: var(--sage-primary-dim);
+    color: var(--sage-primary-glow);
+    padding: var(--sage-spacing-sm) var(--sage-spacing-md);
+    border-bottom: 1px solid var(--sage-border);
+    font-family: var(--sage-font-display);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sage-modal-body {
+    padding: var(--sage-spacing-md);
+}
+
+.sage-modal-footer {
+    padding: var(--sage-spacing-sm) var(--sage-spacing-md);
+    background-color: var(--sage-surface);
+    border-top: 1px solid var(--sage-border);
+    text-align: right;
+}
+
+/* Alerts and notifications */
+.sage-alert-box {
+    border: 1px solid var(--sage-border);
+    border-radius: var(--sage-border-radius);
+    padding: var(--sage-spacing-sm) var(--sage-spacing-md);
+    margin-bottom: var(--sage-spacing-md);
+    position: relative;
+}
+
+.sage-alert-box-info {
+    background-color: var(--sage-secondary-dim);
+    border-color: var(--sage-secondary-color);
+}
+
+.sage-alert-box-success {
+    background-color: var(--sage-primary-dim);
+    border-color: var(--sage-primary-color);
+}
+
+.sage-alert-box-warning {
+    background-color: var(--sage-warning-dim);
+    border-color: var(--sage-warning-color);
+}
+
+.sage-alert-box-error {
+    background-color: var(--sage-alert-dim);
+    border-color: var(--sage-alert-color);
+}
+
+/* Badge */
+.sage-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background-color: var(--sage-primary-color);
+    color: var(--sage-black);
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: var(--sage-spacing-xs);
+}
+
+.sage-badge-secondary {
+    background-color: var(--sage-secondary-color);
+}
+
+.sage-badge-warning {
+    background-color: var(--sage-warning-color);
+}
+
+.sage-badge-alert {
+    background-color: var(--sage-alert-color);
+}
+
+/* Toggle switch */
+.sage-toggle {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.sage-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.sage-toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--sage-black);
+    transition: 0.3s;
+    border-radius: 24px;
+    border: 1px solid var(--sage-border);
+}
+
+.sage-toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 3px;
+    background-color: var(--sage-text);
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+input:checked+.sage-toggle-slider {
+    background-color: var(--sage-primary-dim);
+}
+
+input:checked+.sage-toggle-slider:before {
+    transform: translateX(26px);
+    background-color: var(--sage-primary-glow);
+    box-shadow: 0 0 5px var(--sage-primary-glow);
+}
+
+/* Utilities */
+.sage-text-primary {
+    color: var(--sage-primary-color);
+}
+
+.sage-text-secondary {
+    color: var(--sage-secondary-color);
+}
+
+.sage-text-alert {
+    color: var(--sage-alert-color);
+}
+
+.sage-text-warning {
+    color: var(--sage-warning-color);
+}
+
+.sage-bg-primary {
+    background-color: var(--sage-primary-dim);
+}
+
+.sage-bg-secondary {
+    background-color: var(--sage-secondary-dim);
+}
+
+.sage-bg-alert {
+    background-color: var(--sage-alert-dim);
+}
+
+.sage-bg-warning {
+    background-color: var(--sage-warning-dim);
+}
+
+.sage-border-primary {
+    border-color: var(--sage-primary-color);
+}
+
+.sage-border-secondary {
+    border-color: var(--sage-secondary-color);
+}
+
+.sage-border-alert {
+    border-color: var(--sage-alert-color);
+}
+
+.sage-border-warning {
+    border-color: var(--sage-warning-color);
+}
+
+.sage-glow-primary {
+    box-shadow: 0 0 10px var(--sage-primary-glow);
+}
+
+.sage-glow-secondary {
+    box-shadow: 0 0 10px var(--sage-secondary-glow);
+}
+
+.sage-glow-alert {
+    box-shadow: 0 0 10px var(--sage-alert-glow);
+}
+
+.sage-glow-warning {
+    box-shadow: 0 0 10px var(--sage-warning-glow);
+}
+
+/* Tab Component */
+.sage-tabs {
+    position: relative;
+    margin: var(--sage-spacing-md) 0;
+}
+
+.sage-tab-list {
+    display: flex;
+    border-bottom: 1px solid var(--sage-border);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    position: relative;
+    z-index: 2;
+}
+
+.sage-tab {
+    padding: var(--sage-spacing-xs) var(--sage-spacing-md);
+    margin-right: 2px;
+    margin-bottom: -1px;
+    background-color: var(--sage-surface);
+    border: 1px solid var(--sage-border);
+    border-bottom-color: transparent;
+    border-top-left-radius: var(--sage-border-radius);
+    border-top-right-radius: var(--sage-border-radius);
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    font-family: var(--sage-font-display);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+    color: var(--sage-text-dim);
+}
+
+.sage-tab::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: tab-shine 4s infinite;
+}
+
+@keyframes tab-shine {
+    100% {
+        left: 200%;
+    }
+}
+
+.sage-tab:hover {
+    background-color: var(--sage-primary-dim);
+    color: var(--sage-text);
+}
+
+.sage-tab.active {
+    background-color: var(--sage-surface);
+    border-bottom-color: var(--sage-surface);
+    color: var(--sage-primary-color);
+    box-shadow: 0 -2px 0 var(--sage-primary-color);
+    z-index: 3;
+}
+
+.sage-tab.active::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--sage-primary-color);
+    box-shadow: 0 0 5px var(--sage-primary-glow);
+}
+
+.sage-tab-panel {
+    background-color: var(--sage-surface);
+    border: 1px solid var(--sage-border);
+    border-top: none;
+    padding: var(--sage-spacing-md);
+    position: relative;
+    z-index: 1;
+    display: none;
+    border-bottom-left-radius: var(--sage-border-radius);
+    border-bottom-right-radius: var(--sage-border-radius);
+    border-top-right-radius: var(--sage-border-radius);
+}
+
+.sage-tab-panel.active {
+    display: block;
+    animation: fade-in 0.3s ease-in;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.sage-tab-panel-header {
+    margin-top: 0;
+    color: var(--sage-primary-color);
+    font-size: 20px;
+}
+
+.sage-tab-panel iframe {
+    width: 100%;
+    height: 500px;
+    border: none;
+    background-color: var(--sage-black);
+}
+
+/* Responsiveness */
+@media screen and (max-width: 768px) {
+    .sage-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sage-modal {
+        width: 95%;
+    }
+
+    .sage-tab-list {
+        flex-wrap: wrap;
+    }
+
+    .sage-tab {
+        margin-bottom: 2px;
+    }
+}
+
+/* Color scheme variants */
+.theme-blue {
+    --sage-primary-hue: 200;
+    /* Blue */
+    --sage-secondary-hue: 120;
+    /* Green */
+    --sage-background: #001122;
+    --sage-surface: #002244;
+}
+
+.theme-amber {
+    --sage-primary-hue: 40;
+    /* Amber */
+    --sage-secondary-hue: 200;
+    /* Blue */
+    --sage-background: #1a1400;
+    --sage-surface: #241c00;
+}
+
+.theme-red {
+    --sage-primary-hue: 0;
+    /* Red */
+    --sage-secondary-hue: 200;
+    /* Blue */
+    --sage-background: #110000;
+    --sage-surface: #220000;
+}
+
+.theme-white-phosphor {
+    --sage-primary-hue: 140;
+    /* White-green phosphor */
+    --sage-secondary-hue: 190;
+    /* Cyan-ish as secondary */
+    --sage-background: #000000;
+    --sage-surface: #0a0a0a;
+    --sage-black: #000000;
+    --sage-dark: #0a0a0a;
+    --sage-text: rgba(225, 255, 240, 0.85);
+    --sage-text-dim: rgba(225, 255, 240, 0.6);
+    --sage-border: rgba(225, 255, 240, 0.3);
+    --sage-primary-color: rgba(225, 255, 240, 0.9);
+    --sage-primary-glow: rgba(255, 255, 255, 1);
+    --sage-primary-dim: rgba(225, 255, 240, 0.2);
+    --sage-scan-line: rgba(255, 255, 255, 0.03);
+}
+
+/* Print styles */
+@media print {
+
+    body::before,
+    .sage-crt-effect,
+    .sage-radar-sweep,
+    .sage-cursor {
+        display: none;
+    }
+
+    body {
+        background-color: white;
+        color: black;
+    }
+
+    .sage-terminal,
+    .sage-panel,
+    .sage-button {
+        border: 1px solid #ccc;
+    }
+}

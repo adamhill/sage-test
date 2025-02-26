@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAGE - System Status</title>
+    <link rel="stylesheet" href="sage-design-system.css">
+    <style>
+        /* Add page-specific styles here */
+        body {
+            padding: 20px;
+            min-height: 100vh;
+            margin: 0;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body class="theme-default">
+    <div class="sage-container">
+        <h1>SYSTEM STATUS</h1>
+
+        <div class="sage-panel">
+            <div class="sage-panel-header">ACTIVE STATIONS</div>
+            <table class="sage-table">
+                <thead>
+                    <tr>
+                        <th>STATION ID</th>
+                        <th>LOCATION</th>
+                        <th>STATUS</th>
+                        <th>SIGNAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>STN-001</td>
+                        <td>NORTH PERIMETER</td>
+                        <td><span class="sage-status sage-status-active"></span> ACTIVE</td>
+                        <td>98%</td>
+                    </tr>
+                    <tr>
+                        <td>STN-002</td>
+                        <td>EAST PERIMETER</td>
+                        <td><span class="sage-status sage-status-warning"></span> DEGRADED</td>
+                        <td>67%</td>
+                    </tr>
+                    <tr>
+                        <td>STN-003</td>
+                        <td>SOUTH PERIMETER</td>
+                        <td><span class="sage-status sage-status-active"></span> ACTIVE</td>
+                        <td>95%</td>
+                    </tr>
+                    <tr>
+                        <td>STN-004</td>
+                        <td>WEST PERIMETER</td>
+                        <td><span class="sage-status sage-status-alert"></span> OFFLINE</td>
+                        <td>0%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="sage-alert-box sage-alert-box-info">
+            <strong>SYSTEM INFORMATION:</strong> All critical systems operational. Routine maintenance scheduled for
+            2200 hours.
+        </div>
+    </div>
+
+    <!-- Script to allow parent to control theme -->
+    <script>
+        // Listen for messages from parent window
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'theme-update') {
+                // Update theme class
+                document.body.className = event.data.themeClass || '';
+
+                // Update CSS variables
+                if (event.data.cssVars) {
+                    Object.entries(event.data.cssVars).forEach(([key, value]) => {
+                        document.documentElement.style.setProperty(key, value);
+                    });
+                }
+            }
+        });
+
+        // Notify parent that iframe is ready to receive theme updates
+        if (window.parent !== window) {
+            window.parent.postMessage({ type: 'iframe-ready', id: 'system-status' }, '*');
+        }
+    </script>
+</body>
+
+</html>

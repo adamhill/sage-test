@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAGE - Radar Display</title>
+    <link rel="stylesheet" href="sage-design-system.css">
+    <style>
+        /* Add page-specific styles here */
+        body {
+            padding: 20px;
+            min-height: 100vh;
+            margin: 0;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body class="theme-default">
+    <div class="sage-container">
+        <h1>RADAR MONITORING</h1>
+
+        <div class="sage-panel">
+            <div class="sage-panel-header">PRIMARY RADAR</div>
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; padding: 20px 0;">
+                <div class="sage-radar" style="margin-bottom: 20px;">
+                    <div class="sage-radar-grid"></div>
+                    <div class="sage-radar-sweep"></div>
+                    <div class="sage-target" style="top: 30%; left: 70%;"></div>
+                    <div class="sage-target" style="top: 60%; left: 20%;"></div>
+                    <div class="sage-target" style="top: 45%; left: 50%;"></div>
+                </div>
+
+                <div style="min-width: 300px;">
+                    <h3>TARGET INFORMATION</h3>
+                    <div class="sage-terminal" style="height: 200px;">
+                        <p class="sage-prompt">> SCANNING SECTOR 7</p>
+                        <p>AIRCRAFT IDENTIFIED: 3</p>
+                        <p>FRIENDLY: 2</p>
+                        <p>UNKNOWN: 1</p>
+                        <p class="sage-prompt">> TRACKING UNKNOWN TARGET</p>
+                        <span class="sage-cursor"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sage-alert-box sage-alert-box-warning">
+            <strong>RADAR WARNING:</strong> Unknown aircraft detected in restricted airspace. Initiate identification
+            protocol.
+        </div>
+    </div>
+
+    <!-- Script to allow parent to control theme -->
+    <script>
+        // Listen for messages from parent window
+        window.addEventListener('message', function (event) {
+            if (event.data && event.data.type === 'theme-update') {
+                // Update theme class
+                document.body.className = event.data.themeClass || '';
+
+                // Update CSS variables
+                if (event.data.cssVars) {
+                    Object.entries(event.data.cssVars).forEach(([key, value]) => {
+                        document.documentElement.style.setProperty(key, value);
+                    });
+                }
+            }
+        });
+
+        // Notify parent that iframe is ready to receive theme updates
+        if (window.parent !== window) {
+            window.parent.postMessage({ type: 'iframe-ready', id: 'radar-display' }, '*');
+        }
+
+        // Add some interactive targets to radar
+        setInterval(() => {
+            const radar = document.querySelector('.sage-radar');
+            if (Math.random() > 0.8) {
+                const target = document.createElement('div');
+                target.className = 'sage-target';
+
+                // Random position
+                const top = Math.random() * 100;
+                const left = Math.random() * 100;
+
+                target.style.top = `${top}%`;
+                target.style.left = `${left}%`;
+
+                radar.appendChild(target);
+
+                // Remove after some time
+                setTimeout(() => {
+                    target.remove();
+                }, 4000 + Math.random() * 2000);
+            }
+        }, 2000);
+    </script>
+</body>
+
+</html>
